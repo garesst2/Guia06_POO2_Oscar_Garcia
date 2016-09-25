@@ -11,6 +11,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,10 +26,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author REGISTRO
+ * @author root
  */
 @Entity
-@Table(name = "cursos", catalog = "guia6", schema = "")
+@Table(name = "cursos", catalog = "gui6", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Cursos.findAll", query = "SELECT c FROM Cursos c"),
@@ -57,7 +58,7 @@ public class Cursos implements Serializable {
     @NotNull
     @Column(name = "cost_curs")
     private double costCurs;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiCurs")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiCurs", fetch = FetchType.EAGER)
     private List<Grupos> gruposList;
 
     public Cursos() {

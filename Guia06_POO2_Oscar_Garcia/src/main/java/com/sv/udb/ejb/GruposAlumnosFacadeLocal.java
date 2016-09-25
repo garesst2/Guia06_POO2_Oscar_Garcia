@@ -11,7 +11,7 @@ import javax.ejb.Local;
 
 /**
  *
- * @author AdminDesa
+ * @author root
  */
 @Local
 public interface GruposAlumnosFacadeLocal {
