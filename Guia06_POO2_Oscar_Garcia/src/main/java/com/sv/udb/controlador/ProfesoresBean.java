@@ -100,6 +100,7 @@ public class ProfesoresBean {
             this.listProfe.remove(this.objeProfe); //Limpia el objeto viejo
             FCDEProfe.edit(this.objeProfe);
             this.listProfe.add(this.objeProfe); //Agrega el objeto modificado
+            this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
         } catch (Exception ex) {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
