@@ -7,6 +7,7 @@ package com.sv.udb.controlador;
 
 import com.sv.udb.ejb.GruposAlumnosFacadeLocal;
 import com.sv.udb.modelo.GruposAlumnos;
+import com.sv.udb.utils.Logs;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -14,6 +15,7 @@ import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -28,6 +30,9 @@ public class GruposAlumnosBean implements Serializable{
     private GruposAlumnos objeGrupAlum;
     private List<GruposAlumnos> listGrupAlum;
     private boolean guardar;
+    private Logs<GruposAlumnos> lgs = new Logs<GruposAlumnos>(GruposAlumnos.class) {
+    };
+    private Logger log = lgs.getLog();
     
     /**
      * Creates a new instance of GruposAlumnosBean
@@ -65,12 +70,14 @@ public class GruposAlumnosBean implements Serializable{
     {
         this.limpForm();
         this.consTodo();
+        log.debug("Se ha inicializado un modelo de Grupos Alumnos");
     }
     
     public void limpForm()
     {
         this.objeGrupAlum = new GruposAlumnos();
-        this.guardar = true;        
+        this.guardar = true;
+        log.debug("Se ha limpiado un modelo de Grupos Alumnos");
     }
     
     public void guar()
@@ -82,10 +89,12 @@ public class GruposAlumnosBean implements Serializable{
             this.listGrupAlum.add(this.objeGrupAlum);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
+            log.info("Se ha guardo un registro en Grupos Alumnos");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
+            log.error("Ocurrio un error al momento de guardar en Grupos Alumnos");
         }
         finally
         {
@@ -101,11 +110,14 @@ public class GruposAlumnosBean implements Serializable{
             this.listGrupAlum.remove(this.objeGrupAlum); //Limpia el objeto viejo
             FCDEGruposAlumnos.edit(this.objeGrupAlum);
             this.listGrupAlum.add(this.objeGrupAlum); //Agrega el objeto modificado
+            this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
+            log.info("Se ha modificado en Grupos Alumnos");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
+            log.error("Ocurrio un error al momento de modificar en Grupos Alumnos");
         }
         finally
         {
@@ -122,10 +134,12 @@ public class GruposAlumnosBean implements Serializable{
             this.listGrupAlum.remove(this.objeGrupAlum);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Eliminados')");
+            log.info("Se ha eliminado en Grupos Alumnos");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al eliminar')");
+            log.error("Ocurrio un error al momento de eliminar en Grupos Alumnos");
         }
         finally
         {
@@ -137,10 +151,12 @@ public class GruposAlumnosBean implements Serializable{
     {
         try
         {
+            log.info("Se ha consultado todo en Grupos Alumnos");
             this.listGrupAlum = FCDEGruposAlumnos.findAll();
         }
         catch(Exception ex)
         {
+            log.error("Ocurrio un error al momento de consultar todo en Grupos Alumnos");
             ex.printStackTrace();
         }
         finally
@@ -154,12 +170,14 @@ public class GruposAlumnosBean implements Serializable{
         int codi = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("codiGrupAlumPara"));
         try
         {
+            log.info("Se ha consultado en Grupos Alumnos");
             this.objeGrupAlum = FCDEGruposAlumnos.find(codi);
             this.guardar = false;
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado')");
         }
         catch(Exception ex)
         {
+            log.error("Ocurrio un error al momento de consultar en Grupos Alumnos");
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
         }
         finally

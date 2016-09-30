@@ -7,12 +7,14 @@ package com.sv.udb.controlador;
 
 import com.sv.udb.ejb.ProfesoresFacadeLocal;
 import com.sv.udb.modelo.Profesores;
+import com.sv.udb.utils.Logs;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
+import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -29,6 +31,9 @@ public class ProfesoresBean {
     private List<Profesores> listProfe;
     private boolean guardar;
     private String estado = "none";
+    private Logs<GruposAlumnosBean> lgs = new Logs<GruposAlumnosBean>(GruposAlumnosBean.class) {
+    };
+    private Logger log = lgs.getLog();
 
     public Profesores getObjeProfe() {
         return objeProfe;
@@ -72,12 +77,14 @@ public class ProfesoresBean {
     public void init() {
         this.limpForm();
         this.consTodo();
+        log.debug("Se ha inicializado un modelo de Profesores");
     }
 
     public void limpForm() {
         this.objeProfe = new Profesores();
         this.guardar = true;
         this.estado= "none";
+        log.debug("Se ha limpiado un modelo de Profesores");
     }
 
     public void guar() {
@@ -87,8 +94,10 @@ public class ProfesoresBean {
             this.listProfe.add(this.objeProfe);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
+            log.info("Se ha guardo un registro en Profesores");
         } catch (Exception ex) {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
+            log.error("Ocurrio un error al momento de guardar en Profesores");
         } finally {
 
         }
@@ -102,8 +111,10 @@ public class ProfesoresBean {
             this.listProfe.add(this.objeProfe); //Agrega el objeto modificado
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
+            log.info("Se ha modificado en Profesores");
         } catch (Exception ex) {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
+            log.error("Ocurrio un error al momento de modificar en Profesores");
         } finally {
 
         }
@@ -118,10 +129,12 @@ public class ProfesoresBean {
             this.listProfe.remove(this.objeProfe);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Eliminados')");
+            log.info("Se ha eliminado en Profesores");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al eliminar')");
+            log.error("Ocurrio un error al momento de eliminar en Profesores");
         }
         finally
         {
@@ -133,10 +146,12 @@ public class ProfesoresBean {
     {
         try
         {
+            log.info("Se ha consultado todo en Profesores");
             this.listProfe = FCDEProfe.findAll();
         }
         catch(Exception ex)
         {
+            log.error("Ocurrio un error al momento de consultar todo en Profesores");
             ex.printStackTrace();
         }
         finally
@@ -151,12 +166,14 @@ public class ProfesoresBean {
         int codi = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("codiProfePara"));
         try
         {
+            log.info("Se ha consultado en Profesores");
             this.objeProfe = FCDEProfe.find(codi);
             this.guardar = false;this.estado = "block";
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado ')");
         }
         catch(Exception ex)
         {
+            log.error("Ocurrio un error al momento de consultar en Profesores");
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
         }
         finally

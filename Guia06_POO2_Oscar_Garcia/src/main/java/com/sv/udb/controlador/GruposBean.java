@@ -7,6 +7,8 @@ package com.sv.udb.controlador;
 
 import com.sv.udb.ejb.GruposFacadeLocal;
 import com.sv.udb.modelo.Grupos;
+import com.sv.udb.modelo.GruposAlumnos;
+import com.sv.udb.utils.Logs;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -14,6 +16,7 @@ import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -30,6 +33,9 @@ public class GruposBean implements Serializable{
     private List<Grupos> listGrup;
     private boolean guardar;
     private String estado = "none";
+    private Logs<Grupos> lgs = new Logs<Grupos>(Grupos.class) {
+    };
+    private Logger log = lgs.getLog();
     /**
      * Creates a new instance of GruposBean
      */
@@ -73,13 +79,16 @@ public class GruposBean implements Serializable{
     @PostConstruct
     public void init()
     {
-        this.listGrup = FCDEGrupos.findAll();
+        this.limpForm();
+        this.consTodo();
+        log.debug("Se ha inicializado un modelo de Grupos");
     }
     
     public void limpForm() {
         this.objeGrupos = new Grupos();
         this.guardar = true;
         this.estado = "none";
+        log.debug("Se ha limpiado un modelo de Grupos");
     }
     
     public void guar() {
@@ -89,8 +98,10 @@ public class GruposBean implements Serializable{
             this.listGrup.add(this.objeGrupos);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
+            log.info("Se ha guardo un registro en Grupos");
         } catch (Exception ex) {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
+            log.error("Ocurrio un error al momento de guardar en Grupos");
         } finally {
 
         }
@@ -104,8 +115,10 @@ public class GruposBean implements Serializable{
             this.listGrup.add(this.objeGrupos); //Agrega el objeto modificado
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
+            log.info("Se ha modificado en Grupos");
         } catch (Exception ex) {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
+            log.error("Ocurrio un error al momento de modificar en Grupos");
         } finally {
 
         }
@@ -120,10 +133,12 @@ public class GruposBean implements Serializable{
             this.listGrup.remove(this.objeGrupos);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Eliminados')");
+            log.info("Se ha eliminado en Grupos");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al eliminar')");
+            log.error("Ocurrio un error al momento de eliminar en Grupos");
         }
         finally
         {
@@ -135,10 +150,12 @@ public class GruposBean implements Serializable{
     {
         try
         {
+            log.info("Se ha consultado todo en Grupos");
             this.listGrup = FCDEGrupos.findAll();
         }
         catch(Exception ex)
         {
+            log.error("Ocurrio un error al momento de consultar todo en Grupos");
             ex.printStackTrace();
         }
         finally
@@ -152,12 +169,14 @@ public class GruposBean implements Serializable{
         int codi = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("codiGrupPara"));
         try
         {
+            log.info("Se ha consultado en Grupos");
             this.objeGrupos = FCDEGrupos.find(codi);
             this.guardar = false;this.estado = "block";
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado ')");
         }
         catch(Exception ex)
         {
+            log.error("Ocurrio un error al momento de consultar en Grupos");
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
         }
         finally

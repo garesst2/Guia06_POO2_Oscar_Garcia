@@ -8,12 +8,14 @@ package com.sv.udb.controlador;
 
 import com.sv.udb.ejb.CursosFacadeLocal;
 import com.sv.udb.modelo.Cursos;
+import com.sv.udb.utils.Logs;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -29,6 +31,9 @@ public class CursoBean {
     private List<Cursos> listCurs;
     private boolean guardar;
     private String estado = "none";
+    private Logs<CursoBean> lgs = new Logs<CursoBean>(CursoBean.class) {
+    };
+    private Logger log = lgs.getLog();
 
     public List<Cursos> getListCurs() {
         return listCurs;
@@ -69,6 +74,7 @@ public class CursoBean {
     {
         this.limpForm();
         this.consTodo();
+        log.debug("Se ha inicializado un modelo de curso");
     }
     
     public void limpForm()
@@ -76,6 +82,7 @@ public class CursoBean {
         this.objeCurs = new Cursos();
         this.guardar = true;    
         this.estado = "none";
+        log.debug("Se ha limpiado un modelo de curso");
     }
     
     public void guar()
@@ -87,10 +94,12 @@ public class CursoBean {
             this.listCurs.add(this.objeCurs);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
+            log.info("Se ha guardo un registro en Curso");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
+            log.error("Ocurrio un error al momento de guardar en Curso");
         }
         finally
         {
@@ -106,11 +115,14 @@ public class CursoBean {
             this.listCurs.remove(this.objeCurs); //Limpia el objeto viejo
             FCDECurs.edit(this.objeCurs);
             this.listCurs.add(this.objeCurs); //Agrega el objeto modificado
+            this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
+            log.info("Se ha modificado en Curso");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
+            log.error("Ocurrio un error al momento de modificar en Curso");
         }
         finally
         {
@@ -127,10 +139,12 @@ public class CursoBean {
             this.listCurs.remove(this.objeCurs);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Eliminados')");
+            log.info("Se ha eliminado en Curso");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al eliminar')");
+            log.error("Ocurrio un error al momento de eliminar en Curso");
         }
         finally
         {
@@ -142,10 +156,12 @@ public class CursoBean {
     {
         try
         {
+            log.info("Se ha consultado todo en Curso");
             this.listCurs = FCDECurs.findAll();
         }
         catch(Exception ex)
         {
+            log.error("Ocurrio un error al momento de consultar todo en Curso");
             ex.printStackTrace();
         }
         finally
@@ -160,6 +176,7 @@ public class CursoBean {
         int codi = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("codiCursPara"));
         try
         {
+            log.info("Se ha consultado en Curso");
             this.objeCurs = FCDECurs.find(codi);
             this.guardar = false;this.estado = "block";
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
@@ -167,6 +184,7 @@ public class CursoBean {
         }
         catch(Exception ex)
         {
+            log.error("Ocurrio un error al momento de consultar en Curso");
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
         }
         finally
