@@ -23,17 +23,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author root
+ * @author oscar
  */
 @Entity
-@Table(name = "grupos_alumnos", catalog = "gui6", schema = "")
+@Table(name = "grupos_alumnos", catalog = "guia6", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "GruposAlumnos.findAll", query = "SELECT g FROM GruposAlumnos g"),
     @NamedQuery(name = "GruposAlumnos.findByCodiGrupAlum", query = "SELECT g FROM GruposAlumnos g WHERE g.codiGrupAlum = :codiGrupAlum"),
     @NamedQuery(name = "GruposAlumnos.findByEstaGrupAlum", query = "SELECT g FROM GruposAlumnos g WHERE g.estaGrupAlum = :estaGrupAlum")})
 public class GruposAlumnos implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

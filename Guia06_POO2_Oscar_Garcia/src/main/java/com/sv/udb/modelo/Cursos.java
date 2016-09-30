@@ -6,7 +6,7 @@
 package com.sv.udb.modelo;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -26,10 +26,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author root
+ * @author oscar
  */
 @Entity
-@Table(name = "cursos", catalog = "gui6", schema = "")
+@Table(name = "cursos", catalog = "guia6", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Cursos.findAll", query = "SELECT c FROM Cursos c"),
@@ -38,7 +38,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Cursos.findByDuraCurs", query = "SELECT c FROM Cursos c WHERE c.duraCurs = :duraCurs"),
     @NamedQuery(name = "Cursos.findByCostCurs", query = "SELECT c FROM Cursos c WHERE c.costCurs = :costCurs")})
 public class Cursos implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,7 +58,7 @@ public class Cursos implements Serializable {
     @Column(name = "cost_curs")
     private double costCurs;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiCurs", fetch = FetchType.EAGER)
-    private List<Grupos> gruposList;
+    private Collection<Grupos> gruposCollection;
 
     public Cursos() {
     }
@@ -108,12 +107,12 @@ public class Cursos implements Serializable {
     }
 
     @XmlTransient
-    public List<Grupos> getGruposList() {
-        return gruposList;
+    public Collection<Grupos> getGruposCollection() {
+        return gruposCollection;
     }
 
-    public void setGruposList(List<Grupos> gruposList) {
-        this.gruposList = gruposList;
+    public void setGruposCollection(Collection<Grupos> gruposCollection) {
+        this.gruposCollection = gruposCollection;
     }
 
     @Override

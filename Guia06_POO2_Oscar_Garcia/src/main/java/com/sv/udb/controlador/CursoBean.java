@@ -28,7 +28,24 @@ public class CursoBean {
     private Cursos objeCurs;
     private List<Cursos> listCurs;
     private boolean guardar;
+    private String estado = "none";
 
+    public List<Cursos> getListCurs() {
+        return listCurs;
+    }
+
+    public void setListCurs(List<Cursos> listCurs) {
+        this.listCurs = listCurs;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+    
     public Cursos getObjeCurs() {
         return objeCurs;
     }
@@ -41,10 +58,6 @@ public class CursoBean {
         return guardar;
     }
     
-    public List<Cursos> getListAlum() {
-        return listCurs;
-    }
-
     /**
      * Creates a new instance of CursoBean
      */
@@ -61,7 +74,8 @@ public class CursoBean {
     public void limpForm()
     {
         this.objeCurs = new Cursos();
-        this.guardar = true;        
+        this.guardar = true;    
+        this.estado = "none";
     }
     
     public void guar()
@@ -147,7 +161,7 @@ public class CursoBean {
         try
         {
             this.objeCurs = FCDECurs.find(codi);
-            this.guardar = false;
+            this.guardar = false;this.estado = "block";
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
                     String.format("%s", this.objeCurs.getNombCurs()) + "')");
         }

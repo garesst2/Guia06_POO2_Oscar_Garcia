@@ -13,7 +13,7 @@ $(document).ready(function() {
         {
             popout: true,
             onConfirm: function() {
-                elimAlum();
+                elimCurs();
                 $('[data-toggle="confirmation-popout"]').confirmation('hide');
                 return false;
             },
@@ -31,6 +31,6 @@ $(document).ready(function() {
 
 function INIT_OBJE_Curs()
 {
-    $("#TablAlum").initBootTable();
-    $("#FormAlum\\:btonElim").funcElimCurs();
+    $("#TablCurs").initBootTable();
+    $("#FormCurs\\:btonElim").funcElimCurs();
 }

@@ -12,11 +12,10 @@ import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author root
+ * @author oscar
  */
 @Stateless
 public class AlumnosFacade extends AbstractFacade<Alumnos> implements AlumnosFacadeLocal {
-
     @PersistenceContext(unitName = "POOPU")
     private EntityManager em;
 

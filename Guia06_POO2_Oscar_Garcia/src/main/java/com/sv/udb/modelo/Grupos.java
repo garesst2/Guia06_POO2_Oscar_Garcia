@@ -6,8 +6,8 @@
 package com.sv.udb.modelo;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -31,10 +31,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author root
+ * @author oscar
  */
 @Entity
-@Table(name = "grupos", catalog = "gui6", schema = "")
+@Table(name = "grupos", catalog = "guia6", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Grupos.findAll", query = "SELECT g FROM Grupos g"),
@@ -45,7 +45,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Grupos.findByHoraInicGrup", query = "SELECT g FROM Grupos g WHERE g.horaInicGrup = :horaInicGrup"),
     @NamedQuery(name = "Grupos.findByHoraFinaGrup", query = "SELECT g FROM Grupos g WHERE g.horaFinaGrup = :horaFinaGrup")})
 public class Grupos implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -84,7 +83,7 @@ public class Grupos implements Serializable {
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Profesores codiProf;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiGrup", fetch = FetchType.EAGER)
-    private List<GruposAlumnos> gruposAlumnosList;
+    private Collection<GruposAlumnos> gruposAlumnosCollection;
 
     public Grupos() {
     }
@@ -167,12 +166,12 @@ public class Grupos implements Serializable {
     }
 
     @XmlTransient
-    public List<GruposAlumnos> getGruposAlumnosList() {
-        return gruposAlumnosList;
+    public Collection<GruposAlumnos> getGruposAlumnosCollection() {
+        return gruposAlumnosCollection;
     }
 
-    public void setGruposAlumnosList(List<GruposAlumnos> gruposAlumnosList) {
-        this.gruposAlumnosList = gruposAlumnosList;
+    public void setGruposAlumnosCollection(Collection<GruposAlumnos> gruposAlumnosCollection) {
+        this.gruposAlumnosCollection = gruposAlumnosCollection;
     }
 
     @Override

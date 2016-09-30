@@ -6,8 +6,8 @@
 package com.sv.udb.modelo;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -29,10 +29,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author root
+ * @author oscar
  */
 @Entity
-@Table(name = "alumnos", catalog = "gui6", schema = "")
+@Table(name = "alumnos", catalog = "guia6", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Alumnos.findAll", query = "SELECT a FROM Alumnos a"),
@@ -45,7 +45,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Alumnos.findByDireAlum", query = "SELECT a FROM Alumnos a WHERE a.direAlum = :direAlum"),
     @NamedQuery(name = "Alumnos.findByGeneAlum", query = "SELECT a FROM Alumnos a WHERE a.geneAlum = :geneAlum")})
 public class Alumnos implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -87,7 +86,7 @@ public class Alumnos implements Serializable {
     @Column(name = "gene_alum")
     private Character geneAlum;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiAlum", fetch = FetchType.EAGER)
-    private List<GruposAlumnos> gruposAlumnosList;
+    private Collection<GruposAlumnos> gruposAlumnosCollection;
 
     public Alumnos() {
     }
@@ -172,12 +171,12 @@ public class Alumnos implements Serializable {
     }
 
     @XmlTransient
-    public List<GruposAlumnos> getGruposAlumnosList() {
-        return gruposAlumnosList;
+    public Collection<GruposAlumnos> getGruposAlumnosCollection() {
+        return gruposAlumnosCollection;
     }
 
-    public void setGruposAlumnosList(List<GruposAlumnos> gruposAlumnosList) {
-        this.gruposAlumnosList = gruposAlumnosList;
+    public void setGruposAlumnosCollection(Collection<GruposAlumnos> gruposAlumnosCollection) {
+        this.gruposAlumnosCollection = gruposAlumnosCollection;
     }
 
     @Override
